@@ -1,97 +1,99 @@
-# Calorie Intake Calculator on Nillion
+# Calorie Intake Calculator & Blind Inference Demo
 
-This demo showcases a JavaScript-based Nillion client integrated with a calorie intake calculator. It leverages payments connected to the nillion-devnet or the Nillion Testnet, providing a secure and decentralized environment for managing transactions. The calculator allows users to estimate their daily calorie needs while demonstrating the power of Nillion’s infrastructure in handling real-world applications.
+[![Nillion](https://img.shields.io/badge/Powered%20by-Nillion-green)](https://nillion.com/)
+[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 
-- This uses a proxy /nilchain-proxy set up in the webpack that targets the json rpc from your .env file
-- A Nillion config is in the nillion.ts file. This config reads environment variables from your .env file, which can either point to Testnet or nillion-devnet values
+A secure, privacy-preserving web application that demonstrates **Blind Computation** using the [Nillion Network](https://nillion.com/). This project features a modern **Dark Mode UI** and allows users to perform sensitive calculations—like health data analysis and housing price predictions—without ever revealing their raw input data to the model owner.
 
-## Run nillion-devnet
+## 🚀 Features
 
-First, [install the Nillion SDK and nilup](https://docs.nillion.com/nillion-sdk-and-tools#installation) if you haven't
+-   **Blind Computation**: Execute code on private data while keeping inputs hidden from the compute node.
+-   **Privacy-First Design**: Leverages Nillion's Multi-Party Computation (MPC) technology.
+-   **Modern User Interface**:
+    -   Premium **Dark Mode** theme.
+    -   Guided **Stepper Workflow** for complex operations.
+    -   Responsive Design using **Material UI** and **Tailwind CSS**.
+-   **Dual Demos**:
+    1.  **Calorie Intake Calculator**: Estimate daily calorie needs securely.
+    2.  **Housing Price Predictor**: Predict house prices using a linear regression model on private inputs.
 
-```
-curl https://nilup.nilogy.xyz/install.sh | bash
-```
+## 🛠️ Prerequisites
 
-Install the `latest` version of nillion-devnet to pull the latest updated versions SDK tools including the latest nillion-devnet, and optionally enable telemetry
+Before running the project, ensure you have the following installed:
 
-```
-nilup install latest
-nilup use latest
-nilup instrumentation enable --wallet <your-eth-wallet-address>
-```
+1.  **Node.js**: [Download & Install](https://nodejs.org/) (Version 16 or higher recommended).
+2.  **Nillion SDK & Tools**: Required for running the local devnet.
 
-Run the devnet using any seed (the example uses "my-seed") so the cluster id, websockets, and other environment variables stay constant even when you restart nillion-devnet.
+    ```bash
+    # Install Nillion SDK and tools
+    curl https://nilup.nilogy.xyz/install.sh | bash
+    ```
 
-```shell
-nillion-devnet --seed my-seed
-```
+## 📦 Installation
 
-You will see an output like this:
+1.  **Clone the repository**:
+    ```bash
+    git clone <your-repo-url>
+    cd calorie-intake-calculator-main
+    ```
 
-```
-nillion-devnet --seed my-seed
-ℹ️ cluster id is 222257f5-f3ce-4b80-bdbc-0a51f6050996
-ℹ️ using 256 bit prime
-ℹ️ storing state in /var/folders/1_/2yw8krkx5q5dn2jbhx69s4_r0000gn/T/.tmpU00Jbm (62.14Gbs available)
-🏃 starting nilchain node in: /var/folders/1_/2yw8krkx5q5dn2jbhx69s4_r0000gn/T/.tmpU00Jbm/nillion-chain
-⛓  nilchain JSON RPC available at http://127.0.0.1:48102
-⛓  nilchain gRPC available at localhost:26649
-🏃 starting node 12D3KooWMGxv3uv4QrGFF7bbzxmTJThbtiZkHXAgo3nVrMutz6QN
-⏳ waiting until bootnode is up...
-🏃 starting node 12D3KooWKkbCcG2ujvJhHe5AiXznS9iFmzzy1jRgUTJEhk4vjF7q
-🏃 starting node 12D3KooWMgLTrRAtP9HcUYTtsZNf27z5uKt3xJKXsSS2ohhPGnAm
-👛 funding nilchain keys
-📝 nillion CLI configuration written to /Users/steph/Library/Application Support/nillion.nillion/config.yaml
-🌄 environment file written to /Users/steph/Library/Application Support/nillion.nillion/nillion-devnet.env
-```
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
 
-Copy the path printed after "🌄 environment file written to" and open the file
+## 🔧 Configuration
 
-```
-vim "/Users/steph/Library/Application Support/nillion.nillion/nillion-devnet.env"
-```
+To fully enable Nillion features, you need to connect to a Nillion network (Devnet or Testnet).
 
-This file has the nillion-devnet generated values for cluster id, websocket, json rpc, and private key. You'll need to put these in your local .env in one of the next steps so that your cra-nillion demo app connects to the nillion-devnet.
+### Option A: Local Devnet (Recommended for Development)
 
-## Connect to the Nillion Testnet
+1.  **Install and Start Nillion Devnet**:
+    ```bash
+    nilup install latest
+    nilup use latest
+    nilup instrumentation enable --wallet <your-eth-wallet-address>
+    
+    # Run devnet with a consistent seed
+    nillion-devnet --seed my-seed
+    ```
 
-To connect your blind app to the Nillion Testnet, replace .env values with the [Testnet Config](https://docs.nillion.com/network-configuration)
+2.  **Configure Environment Variables**:
+    -   The `nillion-devnet` command will output an environment file path (e.g., `nillion-devnet.env`).
+    -   Copy `.env.example` to `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    -   Open `.env` and fill in the values from the `nillion-devnet` output:
+        -   `REACT_APP_NILLION_CLUSTER_ID`
+        -   `REACT_APP_NILLION_BOOTNODE_WEBSOCKET`
+        -   `REACT_APP_NILLION_NILCHAIN_JSON_RPC`
+        -   `REACT_APP_NILLION_NILCHAIN_PRIVATE_KEY`
 
-## Clone this repo
+### Option B: Nillion Testnet
 
-```
-git clone https://github.com/NillionNetwork/cra-nillion.git
-cd cra-nillion
-```
+Refer to the [Nillion Testnet Configuration Guide](https://docs.nillion.com/network-configuration) for the appropriate environment variables.
 
-Copy the up the .env.example file to a new .env and set up these variables to match the nillion environment file
+## 🏃‍♂️ Running the Application
 
-```shell
-cp .env.example .env
-```
+Start the development server:
 
-Update your newly created .env with environment variables outout in your terminal by nillion-devnet
-
-```
-REACT_APP_API_BASE_PATH=/nilchain-proxy
-
-# replace with values from nillion-devnet or for Nillion Testnet
-
-REACT_APP_NILLION_CLUSTER_ID=
-REACT_APP_NILLION_BOOTNODE_WEBSOCKET=
-REACT_APP_NILLION_NILCHAIN_JSON_RPC=
-REACT_APP_NILLION_NILCHAIN_PRIVATE_KEY=
-```
-
-Install dependencies and start the demo project.
-
-```shell
-npm install
+```bash
 npm start
 ```
 
-## Check out the demos
+-   The application will open at **[http://localhost:8080](http://localhost:8080)**.
+-   The **Blind Inference Demo** is located at **[http://localhost:8080/blind-inference](http://localhost:8080/blind-inference)**.
 
-- Open http://localhost:8080 to see the "Nillion Operations" page where you can connect with different user key and node keys, store secrets, update secrets, retrieve secrets, and store programs
-- Open http://localhost:8080/compute to see the "Nillion Blind Computation Demo" page where you can run a full blind computation flow.
+## 🧪 How to Use
+
+### Blind Inference Demo
+1.  Navigate to the **Blind Inference** page.
+2.  **Connect**: Click "Generate User Key" to create a temporary identity for the session.
+3.  **Input Data**: Enter the housing features (Area, Bedrooms, etc.). Your data remains private.
+4.  **Compute**: detailed computations happen on the Nillion network. The result (predicted price) is returned to you without the network ever seeing your specific inputs.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
